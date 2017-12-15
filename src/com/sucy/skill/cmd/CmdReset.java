@@ -57,14 +57,20 @@ public class CmdReset implements IFunction
     @Override
     public void execute(ConfigurableCommand cmd, Plugin plugin, CommandSender sender, String[] args)
     {
+        if(sender instanceof Player && !sender.isOp()) {
+            sender.sendMessage(ChatColor.RED + "No permission.");
+            return;
+        }
+
         // Disabled world
-        if (sender instanceof Player && !SkillAPI.getSettings().isWorldEnabled(((Player) sender).getWorld()))
+        if (!SkillAPI.getSettings().isWorldEnabled(((Player) sender).getWorld()))
         {
             cmd.sendMessage(sender, DISABLED, "&4You cannot use this command in this world");
+            return;
         }
 
         // Only players have profession options
-        else if (sender instanceof Player)
+        else if (!(sender instanceof Player))
         {
             if (args.length == 0 || !args[0].equalsIgnoreCase("confirm"))
             {
@@ -80,9 +86,9 @@ public class CmdReset implements IFunction
         }
 
         // Console doesn't have profession options
-        else
-        {
-            cmd.sendMessage(sender, CANNOT_USE, ChatColor.RED + "This cannot be used by the console");
-        }
+//        else
+//        {
+//            cmd.sendMessage(sender, CANNOT_USE, ChatColor.RED + "This cannot be used by the console");
+//        }
     }
 }
