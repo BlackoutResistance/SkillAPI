@@ -258,6 +258,7 @@ public class AttributeListener extends SkillAPIListener
             data.addMaxMana(change);
 
             change = updateStat(data, AttributeManager.MOVE_SPEED, player.getWalkSpeed());
+
             if (change + player.getWalkSpeed() > 1)
             {
                 bonuses.put(player.getName() + ":" + AttributeManager.MOVE_SPEED, 0.8);
@@ -282,6 +283,7 @@ public class AttributeListener extends SkillAPIListener
         bonuses.remove(player.getName() + ":" + AttributeManager.MOVE_SPEED);
         double speed = updateStat(SkillAPI.getPlayerData(player), AttributeManager.MOVE_SPEED, 0.2);
         player.setWalkSpeed((float) (0.2 + speed));
+        System.out.println("Player speed after refresh: " + player.getWalkSpeed());
     }
 
     /**
@@ -304,6 +306,7 @@ public class AttributeListener extends SkillAPIListener
             bonuses.put(mapKey, updated);
             return updated - current;
         }
+
         return 0;
     }
 
@@ -318,6 +321,8 @@ public class AttributeListener extends SkillAPIListener
         // Class selection
         if (InventoryManager.isMatching(event.getInventory(), MENU_KEY))
         {
+            event.setCancelled(true);
+
             // Do nothing when clicking outside the inventory
             if (event.getSlot() == -999)
             {
@@ -332,7 +337,7 @@ public class AttributeListener extends SkillAPIListener
             {
                 if (event.getSlot() < manager.getKeys().size() || event.getCursor() != null)
                 {
-                    event.setCancelled(true);
+//                    event.setCancelled(true);
 
                     PlayerData data = SkillAPI.getPlayerData((Player) event.getWhoClicked());
                     if (event.isRightClick() && SkillAPI.getSettings().isAttributesDowngrade())
@@ -350,10 +355,10 @@ public class AttributeListener extends SkillAPIListener
             }
 
             // Do not allow shift clicking items into the inventory
-            else if (event.isShiftClick())
-            {
-                event.setCancelled(true);
-            }
+//            else if (event.isShiftClick())
+//            {
+//                event.setCancelled(true);
+//            }
         }
     }
 }
